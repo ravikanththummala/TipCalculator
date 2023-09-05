@@ -1,8 +1,8 @@
 # For more information about this configuration visit
 # https://github.com/fastlane/scan#scanfile
 
-workspace "AnyApp.xcodeproj/project.xcworkspace"
-scheme "AnyApp"
+workspace "TipCalculator.xcodeproj/project.xcworkspace"
+scheme "TipCalculator"
 sdk "iphonesimulator"
 device "iPhone 112"
 code_coverage true

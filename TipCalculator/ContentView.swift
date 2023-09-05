@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  TipCalculator
-//
-//  Created by Mohammad Azam on 9/29/21.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -23,6 +16,7 @@ struct ContentView: View {
                 
                 TextField("Enter total", text: $total)
                     .textFieldStyle(.roundedBorder)
+                    .accessibilityIdentifier("totalTextField")
                 
                 Picker(selection: $tipPercentage) {
                     Text("10%").tag(0.1)
@@ -31,41 +25,51 @@ struct ContentView: View {
                 } label: {
                     EmptyView()
                 }.pickerStyle(.segmented)
+                    .accessibilityIdentifier("tipPercentageSegmentedControl")
+
                 
-                
-                Button("Calculate Tip") {
+                Button {
+                  
                     message = ""
                     tip = ""
                     
                     guard let total = Double(self.total) else {
-                        message = "Enter amount should be Double only"
+                        message = "Invalid Input"
                         return
                     }
+                    
                     do {
                         
-                        let value = try self.tipCalculator.calculate(total: total, tripPercentage: tipPercentage)
+                        let result = try tipCalculator.calculate(total: total, tripPercentage: tipPercentage)
+                        
                         let formatter = NumberFormatter()
                         formatter.numberStyle = .currency
-                        tip = formatter.string(from: NSNumber(value: value))
-                    }catch TipCalculatorError.invalidInput{
-                        message = "Invalid input"
-                    }catch{
+                        tip = formatter.string(from: NSNumber(value: result))
+                        
+                    } catch TipCalculatorError.invalidInput {
+                        message = "Invalid Input"
+                    } catch {
                         message = error.localizedDescription
                     }
-
+                    
+                } label: {
+                    Text("Calculate Tip")
+                        .accessibilityIdentifier("calculateTipButton")
                     
                 }.padding(.top, 20)
                 
                 Text(message)
                     .padding(.top, 50)
+                    .accessibilityIdentifier("messageText")
                 
                 Spacer()
                 
                 Text(tip ?? "")
                     .font(.system(size: 54))
+                    .accessibilityIdentifier("tipText")
                 
                 Spacer()
-                    .navigationTitle("Tip Calculator")
+                .navigationTitle("Tip Calculator")
             }.padding()
             
         }
